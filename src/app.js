@@ -6,16 +6,16 @@ import usersRouter from './routes/users.router.js';
 import petsRouter from './routes/pets.router.js';
 import adoptionsRouter from './routes/adoption.router.js';
 import sessionsRouter from './routes/sessions.router.js';
+import viewRouter from './routes/view.router.js';
 
 import swaggerUI from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
 import __dirname from './utils.js';
-import YAML from 'yamljs';
-import path from 'path';
+import handlebars from 'express-handlebars';
 
 const app = express();
 const PORT = process.env.PORT||8080;
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/adoptme';
+const MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://coderuser:Hsiu8LrVRlpeSzAI@cluster0.b6out72.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 const connection = mongoose.connect(MONGO_URL);
 
 console.log(__dirname+'routes/*.js');
@@ -34,11 +34,17 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
+//Configuración del motor de plantillas Handlebars
+app.engine('handlebars', handlebars.engine());
+app.set('views', __dirname + '/views');
+app.set('view engine', 'handlebars');
+
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec)); //Si no queremos usar comentarios ponemos const swaggerSpec = YAML.load( path.join(__dirname, 'docs', 'swagger.yaml') );
 
 app.use(express.json());
 app.use(cookieParser());
 
+app.use('/',viewRouter);
 app.use('/api/users',usersRouter);
 app.use('/api/pets',petsRouter);
 app.use('/api/adoptions',adoptionsRouter);

@@ -1,0 +1,11 @@
+<h1>Listado de mascotas</h1>
+
+{{#if pets.length}}
+    <ul>
+        {{#each pets}}
+            <li>{{this.name}} - {{this.specie}}</li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No hay mascotas registradas.</p>
+{{/if}}

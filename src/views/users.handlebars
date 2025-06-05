@@ -1,0 +1,11 @@
+<h1>Listado de usuarios</h1>
+
+{{#if users.length}}
+    <ul>
+        {{#each users}}
+            <li>{{this.name}} - {{this.email}}</li>
+        {{/each}}
+    </ul>
+{{else}}
+    <p>No hay usuarios registrados.</p>
+{{/if}}
